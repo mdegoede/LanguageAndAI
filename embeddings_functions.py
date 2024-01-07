@@ -54,4 +54,3 @@ class FasttextEmbedding:
         def calculate_average(lst):
             return sum(lst) / len(lst) if len(lst) > 0 else None
         self.mil_and_genz['doc_embedding_average'] = self.mil_and_genz['doc_embedding'].apply(calculate_average)
-

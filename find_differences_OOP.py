@@ -194,4 +194,3 @@ print('POS distribution (genz overersampled)')
 pos_dict_os = analyzer.parts_of_speech_comparison(generational_words_os)
 print('POS distribution (mil undersampled)')
 pos_dict_us = analyzer.parts_of_speech_comparison(generational_words_us)
-

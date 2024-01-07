@@ -228,4 +228,3 @@ class StylometryAnalyzer:
         plt.xticks(rotation=45)
         plt.show()
         return pos_by_author_dict
-
