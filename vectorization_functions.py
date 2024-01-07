@@ -9,6 +9,9 @@ class Vectorizer:
         self.mil_and_genz = self.load_data()
 
     def load_data(self):
+        """
+        loads the data and tokenize the text
+        """
         mil_and_genz = self.df_birth_year[(1986 < self.df_birth_year['birth_year']) & (self.df_birth_year['birth_year'] <= 2006)]
         mil_and_genz['binary_birth_year'] = 1
         mil_and_genz.loc[
@@ -18,19 +21,31 @@ class Vectorizer:
         return mil_and_genz
 
     def docu_length(self):
+        """
+        calculates the document length of a post
+        """
         def count_words(tokens):
             return sum(1 for token in tokens if token.isalpha())
         self.mil_and_genz['doc_length'] = self.mil_and_genz['post_tokenized'].apply(count_words)
 
     def count_sent(self):
+        """
+        calculates number of sentences per document
+        """
         self.mil_and_genz['nr_sent'] = [len(nltk.sent_tokenize(text)) for text in self.mil_and_genz['post']]
 
     def add_avg_sentence_length_column(self):
+        """
+        calculate average sentence length and add the column to the dataframe
+        """
         def calculate_avg_sentence_length(text):
             return sum(1 for sentence in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sentence) if word.isalpha()) / max(1, len(nltk.sent_tokenize(text)))
         self.mil_and_genz['avg_sentence_length'] = self.mil_and_genz['post'].apply(calculate_avg_sentence_length)
 
     def add_pos_tags_column(self):
+        """
+        create a dictionary of POS tags for every post, also adds POS as separate columns
+        """
         def get_pos_tags(tokenized_post):
             pos_tags = pos_tag(tokenized_post)
             pos_counts = {}
@@ -43,6 +58,9 @@ class Vectorizer:
         self.mil_and_genz = pd.concat([self.mil_and_genz, pos_tags_features], axis=1)
 
     def add_word_occurrences_column(self, word):
+        """
+        counts occurrences of a given word
+        """
         def count_occurrences(row):
             tokens = [token.lower() for token in row['post_tokenized']]
             return tokens.count(word.lower())

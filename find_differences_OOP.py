@@ -1,6 +1,4 @@
 from stylometry_functions import StylometryAnalyzer
-import time
-start_time = time.time()
 
 # Load data and get vocabulary size
 analyzer = StylometryAnalyzer(data_path='data/birth_year.csv')
@@ -196,8 +194,3 @@ print('POS distribution (genz overersampled)')
 pos_dict_os = analyzer.parts_of_speech_comparison(generational_words_os)
 print('POS distribution (mil undersampled)')
 pos_dict_us = analyzer.parts_of_speech_comparison(generational_words_us)
-
-
-end_time = time.time()
-elapsed_time = end_time - start_time
-print(f"Time taken: {elapsed_time} seconds")

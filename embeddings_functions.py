@@ -10,6 +10,9 @@ class FasttextEmbedding:
         self.model = None
 
     def load_data(self):
+        """
+        loads the data and tokenize the text
+        """
         mil_and_genz = self.df_birth_year[(1986 < self.df_birth_year['birth_year']) & (self.df_birth_year['birth_year'] <= 2006)]
         mil_and_genz['binary_birth_year'] = 1
         mil_and_genz.loc[
@@ -19,6 +22,9 @@ class FasttextEmbedding:
         return mil_and_genz
 
     def train_fasttext_model(self):
+        """
+        trains a fasttext model on the corpus and saves it
+        """
         corpus = " ".join([" ".join(post) for post in self.mil_and_genz['post_tokenized']])
         with open("data/temp_corpus.txt", "w", encoding="utf-8") as file:
             file.write(corpus)
@@ -27,6 +33,9 @@ class FasttextEmbedding:
         return self.model
 
     def process_and_add_embedding(self):
+        """
+        get the average embedding for per post (document embedding)
+        """
         if self.model is not None:
             def get_average_embedding(tokens):
                 embeddings = [self.model.get_word_vector(word) for word in tokens if word in self.model.words]
@@ -39,6 +48,9 @@ class FasttextEmbedding:
             self.mil_and_genz['doc_embedding'] = self.mil_and_genz['post_tokenized'].apply(get_average_embedding)
 
     def calculate_and_add_average_column(self):
+        """
+        create a new column with document embedding averages
+        """
         def calculate_average(lst):
             return sum(lst) / len(lst) if len(lst) > 0 else None
         self.mil_and_genz['doc_embedding_average'] = self.mil_and_genz['doc_embedding'].apply(calculate_average)

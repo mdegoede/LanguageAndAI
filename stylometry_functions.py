@@ -12,6 +12,9 @@ class StylometryAnalyzer:
         self.mil_and_genz = self.process_data()
 
     def process_data(self):
+        """
+        structure the data, adding millenials and genz classes and tokenize the posts for mil and genz separately
+        """
         mil_and_genz = self.df_birth_year[(1986 < self.df_birth_year['birth_year']) & (self.df_birth_year['birth_year'] <= 2006)]
         mil_and_genz['binary_birth_year'] = mil_and_genz['birth_year']
         mil_and_genz.loc[(1986 < mil_and_genz['birth_year']) & (mil_and_genz['birth_year'] <= 1096), 'binary_birth_year'] = 1
@@ -27,11 +30,17 @@ class StylometryAnalyzer:
         return mil_and_genz, mil, genz, tokens_mil, tokens_genz, t
 
     def vocabulary_size(self, df):
+        """
+        calculate vocabulary size
+        """
         flat_tokens = [token.lower() for sublist in df for token in sublist]
         vocabulary = set(flat_tokens)
         return len(vocabulary)
 
     def handle_imbalances(self, genz_df, mil_df):
+        """
+        over and undersampling
+        """
         genz_oversampled = resample(genz_df, replace=True, n_samples=len(mil_df), random_state=42)
         tokens_genz_oversampled = genz_oversampled.post.str.findall('\w+|[^\w\s]')
 
@@ -41,6 +50,9 @@ class StylometryAnalyzer:
         return genz_oversampled, tokens_genz_oversampled, mil_undersampled, tokens_mil_undersampled
 
     def stylometry_comparison(self, corpus, task, df_mil, df_genz):
+        """
+        get token, word length distributions
+        """
         len_by_author_dict = {}
         if task == 'Sentence':
             gen1 = 'mil'
@@ -77,6 +89,9 @@ class StylometryAnalyzer:
         return len_by_author_dict
 
     def sent_len_comparison(self, task, df_mil, df_genz):
+        """
+        get sentence length distributions
+        """
         len_by_author_dict = {}
         gen1 = 'mil'
         gen2 = 'genz'
@@ -115,6 +130,9 @@ class StylometryAnalyzer:
         return len_by_author_dict
 
     def stopwords_comparison(self, corpus):
+        """
+        get stopword count distributions
+        """
         stopwords_by_author_dict = {}
         stop_words = set(stopwords.words('english'))
         generations = list(corpus.keys())
@@ -146,6 +164,9 @@ class StylometryAnalyzer:
         return stopwords_by_author_dict
 
     def punctuation_comparison(self, corpus):
+        """
+        get punctuation count distributions
+        """
         punctuation_by_author_dict = {}
         generations = list(corpus.keys())
         gen1, gen2 = generations
@@ -176,6 +197,9 @@ class StylometryAnalyzer:
         return punctuation_by_author_dict
 
     def parts_of_speech_comparison(self, corpus):
+        """
+        get POS count distributions
+        """
         pos_by_author_dict = {}
         generations = list(corpus.keys())
         gen1, gen2 = generations

@@ -14,7 +14,9 @@ class ModelEvaluator:
         self.df_selected_features = None
 
     def select_20_features(self):
-        # trains a logreg model on the data and returns the 20 features with the highest importance in a dataframe
+        """
+        trains a logreg model on the data and returns the 20 features with the highest importance in a dataframe
+        """
         X_embeddings = np.vstack(self.mil_and_genz_merged['doc_embedding'].to_numpy())
         X_doc_length = self.mil_and_genz_merged['doc_embedding_average'].to_numpy().reshape(-1, 1)
         X_additional_features = self.mil_and_genz_merged[['doc_length', 'nr_sent', 'avg_sentence_length',
@@ -58,6 +60,9 @@ class ModelEvaluator:
         return df_selected_features
 
     def majority_baseline(self):
+        """
+        majority baseline model
+        """
         X = self.df_selected_features.drop(['binary_birth_year'], axis=1)
         y = self.df_selected_features['binary_birth_year']
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
@@ -68,6 +73,9 @@ class ModelEvaluator:
             y_test, y_pred), confusion_matrix(y_test, y_pred)
 
     def default_baseline(self):
+        """
+        default logreg baseline model
+        """
         X = self.df_selected_features.drop(['binary_birth_year'], axis=1)
         y = self.df_selected_features['binary_birth_year']
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
@@ -78,6 +86,9 @@ class ModelEvaluator:
             y_test, y_pred), confusion_matrix(y_test, y_pred)
 
     def logreg_gs(self):
+        """
+        logreg model with gridsearch
+        """
         X = self.df_selected_features.drop(['binary_birth_year'], axis=1)
         y = self.df_selected_features['binary_birth_year']
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
@@ -93,6 +104,9 @@ class ModelEvaluator:
                grid_clf_acc.best_estimator_.get_params()['penalty'], results
 
     def naive_bayes_gs(self):
+        """
+        naive bayes with gridsearch
+        """
         X = self.df_selected_features.drop(['binary_birth_year'], axis=1)
         y = self.df_selected_features['binary_birth_year']
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
@@ -110,6 +124,9 @@ class ModelEvaluator:
                    'var_smoothing'], param_values, mean_test_scores
 
     def SVM_gs(self):
+        """
+        SVM with gridsearch
+        """
         X = self.df_selected_features.drop(['binary_birth_year'], axis=1)
         y = self.df_selected_features['binary_birth_year']
         X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
