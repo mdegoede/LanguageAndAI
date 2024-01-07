@@ -128,4 +128,3 @@ plt.title('Grid Search Results')
 plt.xlabel('C')
 plt.ylabel('gamma and kernel')
 plt.show()
-
