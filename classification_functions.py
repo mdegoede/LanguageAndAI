@@ -146,3 +146,4 @@ class ModelEvaluator:
             y_test, y_pred), confusion_matrix(y_test, y_pred), grid_clf_acc.best_estimator_.get_params()['C'], \
                grid_clf_acc.best_estimator_.get_params()['gamma'], grid_clf_acc.best_estimator_.get_params()[
                    'kernel'], param_C_values, param_gamma_values, param_kernel_values, mean_test_scores
+

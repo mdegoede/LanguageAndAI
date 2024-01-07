@@ -66,4 +66,3 @@ class Vectorizer:
             return tokens.count(word.lower())
         column_name = f'count_{word}'
         self.mil_and_genz[column_name] = self.mil_and_genz.apply(count_occurrences, axis=1)
-
