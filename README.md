@@ -4,12 +4,12 @@ Repository for the experiments described in "Title"
 
 ## Overview
 
-- [Paper Details](#Paper Details)
+- [Paper Details](#PaperDetails)
   - [tl;dr](#tl;dr)
   - [Reproduction](#Reproduction)
   - [Dependencies](#Dependencies)
 
-## Paper Details
+## PaperDetails
 
 ### tl;dr
 
