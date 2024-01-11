@@ -82,7 +82,10 @@ class StylometryAnalyzer:
         plt.plot(df['Frequency'], df[gen2], label=gen2)
         plt.xlabel(f'{task} length')
         plt.ylabel('Frequency')
-        plt.title(f'Comparison of 15 highest frequencies of {task} length')
+        if task=='Sentence':
+            plt.title(f'Comparison of 15 highest frequencies number of sentences')
+        else:
+            plt.title(f'Comparison of 15 highest frequencies of {task} length')
         plt.legend()
         plt.xticks(rotation=45)
         plt.show()

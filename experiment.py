@@ -18,10 +18,6 @@ data_processor.add_avg_sentence_length_column()
 for item in ['a', 'and', 'you', 'is', '?', '"', '/', '#', '!']:
     data_processor.add_word_occurrences_column(item)
 data_processor.add_pos_tags_column()
-# als het niet werkt, uncomment deze:
-#mil_and_genz.to_csv('data/mil_and_genz2.csv', index=False)
-#mil_and_genz = pd.read_csv('data/mil_and_genz2.csv')
-#mil_and_genz['pos_tags'] = mil_and_genz['pos_tags'].apply(ast.literal_eval)
 vec = DictVectorizer(sparse=False)
 pos_tags_features = pd.DataFrame(vec.fit_transform(mil_and_genz['pos_tags']), columns=vec.get_feature_names())
 mil_and_genz = pd.concat([mil_and_genz, pos_tags_features], axis=1)
@@ -62,6 +58,7 @@ df_selected_features = evaluator.select_20_features()
 evaluator.df_selected_features = df_selected_features
 
 # majority baseline model
+print('majority baseline model')
 accuracy_m, precision_m, recall_m, f1_m, confusion_matrix_m = evaluator.majority_baseline()
 print('Accuracy Score : ' + str(accuracy_m))
 print('Precision Score : ' + str(precision_m))
@@ -70,6 +67,7 @@ print('F1 Score : ' + str(f1_m))
 print('Confusion Matrix : \n' + str(confusion_matrix_m))
 
 # default logreg baseline model
+print('default logreg baseline model')
 accuracy_d, precision_d, recall_d, f1_d, confusion_matrix_d = evaluator.default_baseline()
 print('Accuracy Score : ' + str(accuracy_d))
 print('Precision Score : ' + str(precision_d))
@@ -78,6 +76,7 @@ print('F1 Score : ' + str(f1_d))
 print('Confusion Matrix : \n' + str(confusion_matrix_d))
 
 # logreg model with gridsearch
+print('logreg model with gridsearch')
 accuracy_l, precision_l, recall_l, f1_l, confusion_matrix_l, C_l, penalty_l, results_l = evaluator.logreg_gs()
 print('Gridsearch results:\n C: ' + str(C_l) + ' penalty: ' + str(penalty_l))
 print('Accuracy Score : ' + str(accuracy_l))
@@ -95,6 +94,7 @@ plt.ylabel('C')
 plt.show()
 
 # naive bayes with gridsearch
+print('naive bayes with gridsearch')
 accuracy_n, precision_n, recall_n, f1_n, confusion_matrix_n, var_smoothing, param_values_n, mean_test_scores_n = evaluator.naive_bayes_gs()
 print('Gridsearch results:\n var_smoothing: ' + str(var_smoothing))
 print('Accuracy Score : ' + str(accuracy_n))
@@ -112,6 +112,7 @@ plt.ylabel('Mean Test Score')
 plt.show()
 
 # SVM with gridsearch
+print('SVM with gridsearch')
 accuracy_s, precision_s, recall_s, f1_s, confusion_matrix_s, C_s, gamma_s, kernel_s, param_C_values, param_gamma_values, param_kernel_values, mean_test_scores = evaluator.SVM_gs()
 print('Gridsearch results:\n C: ' + str(C_s) + ' gamma: ' + str(gamma_s) + ' kernel: ' + str(kernel_s))
 print('Accuracy Score : ' + str(accuracy_s))

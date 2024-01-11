@@ -1,6 +1,7 @@
 import pandas as pd
 import fasttext
 import numpy as np
+import os
 
 class FasttextEmbedding:
     def __init__(self, data_path, output_model_path):
@@ -29,6 +30,8 @@ class FasttextEmbedding:
         with open("data/temp_corpus.txt", "w", encoding="utf-8") as file:
             file.write(corpus)
         self.model = fasttext.train_unsupervised("data/temp_corpus.txt")
+        if not os.path.exists('result/'):
+            os.makedirs('result/')
         self.model.save_model(self.output_model_path)
         return self.model
 

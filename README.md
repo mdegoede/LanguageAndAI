@@ -1,6 +1,6 @@
-# LanguageAndAI - Title of research paper
+# Language and AI - Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials
 
-Repository for the experiments described in "Title"
+Repository for the experiments described in "Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials"
 
 ## Overview
 
@@ -21,7 +21,7 @@ We :
 
 ### Reproduction
 
-To reproduce the results in "Title", run 'experiment.py'. It is assumed that there is a \data folder containing the provided auhtor_birthyear table and is stored as 'birth_year.csv'. Running 'find_differences_OOP.py' provides additional plots and statistics that back up decisions made to determine stylometric features that were different from Millennials and Genzers. 
+To reproduce the results in "Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials", run 'experiment.py'. It is assumed that there is a \data folder containing the provided auhtor_birthyear table and is stored as 'birth_year.csv'. Running 'find_differences_OOP.py' provides additional plots and statistics that back up decisions made to determine stylometric features that were different from Millennials and Genzers. 
 > The code was tested with Python 3.8.8 on Windows.
 
 'experiment.py' imports the classes Vectorizer, FasttextEmbedding and ModelEvaluator from 'vectorization_functions.py', 'embeddings_functions.py' and 'classification_functions.py' respectively. 
