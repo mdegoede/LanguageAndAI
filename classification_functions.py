@@ -52,9 +52,13 @@ class ModelEvaluator:
         coefficients_dict = dict(zip(feature_names, coefficients))
         coefficients_dict_sorted = dict(sorted(coefficients_dict.items(), key=lambda item: abs(item[1]), reverse=True))
 
+        embedding_columns = [f'embedding_{i}' for i in range(X_embeddings.shape[1])]
+        self.mil_and_genz_merged[embedding_columns] = X_embeddings
+
         # 20 most important coefficients
         top_20_features = dict(itertools.islice(coefficients_dict_sorted.items(), 20))
         feature_keys = list(top_20_features.keys())
+        print('top 20 features: ', feature_keys)
         feature_keys.append('binary_birth_year')
         df_selected_features = self.mil_and_genz_merged[feature_keys]
         return df_selected_features

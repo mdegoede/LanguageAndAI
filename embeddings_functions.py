@@ -2,11 +2,14 @@ import pandas as pd
 import fasttext
 import numpy as np
 import os
+import langdetect
+from langdetect import detect, detect_langs
 
 class FasttextEmbedding:
     def __init__(self, data_path, output_model_path):
         self.df_birth_year = pd.read_csv(data_path)
         self.mil_and_genz = self.load_data()
+        self.mil_and_genz = self.language_detector_non_eng()
         self.output_model_path = output_model_path
         self.model = None
 
@@ -21,6 +24,85 @@ class FasttextEmbedding:
         mil_and_genz = mil_and_genz.reset_index(drop=True)
         mil_and_genz['post_tokenized'] = mil_and_genz.post.str.findall('\w+|[^\w\s]')
         return mil_and_genz
+
+    def language_detection(self, text, method="single"):
+
+        """
+        @desc:
+          - detects the language of a text
+        @params:
+          - text: the text which language needs to be detected
+          - method: detection method:
+            single: if the detection is based on the first option (detect)
+        @return:
+          - the langue/list of languages
+        """
+
+        if (method.lower() != "single"):
+            result = detect_langs(text)
+
+        else:
+            result = detect(text)
+
+        return result
+
+    def language_detector_non_eng(self):
+        """Takes the data as input and returns the data without non-English entries or below 85% of English."""
+        print('Detecting non english and dropping...')
+
+
+        dropping_no_eng = list()
+
+        for i in range(len(self.mil_and_genz)):
+            try:
+                x = self.language_detection(str(self.mil_and_genz['post'][i]), 'all languages')
+                if len(x) > 1:
+                    #print(f"index: {i}, score: {x}")
+                    # Remove brackets and split the string by ','
+                    pairs = str(x).strip('[]').split(', ')
+
+                    # Create a dictionary for each key-value pair
+                    result_dict = {}
+                    for pair in pairs:
+                        language, value = pair.split(':')
+                        result_dict[language] = float(value)
+
+                    #print(f"index: {i}, score: {result_dict}")
+
+                    if ('en' in result_dict.keys()) and (result_dict['en'] < 0.85):  ## cutoff
+                        dropping_no_eng.append(i)
+
+                    elif not 'en' in result_dict.keys():  ## cutoff
+                        dropping_no_eng.append(i)
+
+                    else:
+                        pass
+
+
+
+                else:
+                    string = str(x).strip('[]')
+                    language, value = string.split(':')
+                    result_dict = {language: float(value)}
+                    #print(f"index: {i}, score: {result_dict}.")
+
+                    if not 'en' in result_dict.keys():
+                        dropping_no_eng.append(i)
+
+                    else:
+                        pass
+
+            except:
+                print(f'Something was wrong here: {i}')
+                dropping_no_eng.append(i)
+        print(f"Before dropping length: {len(self.mil_and_genz)}")
+        self.mil_and_genz.drop(dropping_no_eng, axis=0, inplace=True)
+        self.mil_and_genz.reset_index(inplace=True)
+        print(f"After dropping length: {len(self.mil_and_genz)}")
+
+        print('Done language detecting.')
+
+        return self.mil_and_genz
 
     def train_fasttext_model(self):
         """
