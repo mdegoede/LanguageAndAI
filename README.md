@@ -1,6 +1,6 @@
 # Language and AI - Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials
 
-Repository for the experiments described in "Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials"
+Repository for the experiments described in "Generational Stylometry: Analyzing Writing Styles to Classifying Reddits from Genzers and Millennials".
 
 ## Overview
 
@@ -8,6 +8,9 @@ Repository for the experiments described in "Generational Stylometry: Analyzing 
   - [tl;dr](#tl;dr)
   - [Reproduction](#Reproduction)
   - [Dependencies](#Dependencies)
+- [Extensions](#Extensions)
+  - [Adding Data](#AddingData)
+  - [Changing Classifiers](#ChangingClassifiers)
 
 ## PaperDetails
 
@@ -43,3 +46,11 @@ scikit-learn    0.24.1
 nltk            3.6.1
 langdetect      1.0.9
 ```
+
+## Extensions
+
+### AddingData
+This code can be used in different data, as long as there is a file named 'birth_year.csv' stored in a \data folder. This file should contain information in the columns auhtor_ID, post, and birth_year. The information stored in auhtor_ID can be of any form, as long as it is representative of the author of the post. Post should be a string containing the post written by the author. birth_year should contain the birthyear of the author as integer and should have at least one author with birthyear in the range (1986,1996] and one author with birthyear in range (1996, 2006]. 
+
+### ChangingClassifiers
+The classification years can be adapted by changing the values in the load_data methods from the Vectorizer and ModelEvaluator classes, which can be found in 'vectorization_functions.py' and 'classification_functions.py' respectively. 
